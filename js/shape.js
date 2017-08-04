@@ -8,8 +8,7 @@ class Shape {
 		this.figure.beginFill(color);
 
 		// Draw
-		// switch(type[randomInt(0, type.length)]) {
-		switch(type[5]) {
+		switch(type[randomInt(0, type.length)]) {
 			case 'circle':
 				this.figure.drawCircle(0, 0, randomInt(10, 50));
 				break;
