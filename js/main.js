@@ -1,34 +1,32 @@
 var type = (PIXI.utils.isWebGLSupported())? "WebGL" : "canvas";
 PIXI.utils.sayHello(type)
 
-var renderer = PIXI.autoDetectRenderer();
+var renderer = PIXI.autoDetectRenderer(parameters.width, parameters.height);
 document.getElementById('work-area').appendChild(renderer.view);
 
+var animator = new Animator({ renderer });
 var stage = new PIXI.Container();
 
-var gameArea = new PIXI.Graphics();
-gameArea.beginFill(0x000000);
-gameArea.drawRect(0, 0, renderer.view.width, renderer.view.height);
-gameArea.endFill();
-stage.addChild(gameArea);
-gameArea.interactive = true;
-gameArea.on('pointerdown', function(e) {
-	new Shape({
-		x: e.data.global.x,
-		y: e.data.global.y,
-		stage
-	});
-});
+var moveArea = new PIXI.Container();
+gameArea.init(stage, moveArea);
+stage.addChild(moveArea);
+animator.loop = (frame) => {
+	// moveArea.y += frame * parameters.moveSpeed;
 
-var shape = new Shape({
-	x: 64,
-	y: 130,
-	stage
-});
-
-
-function update() {
-	renderer.render(stage);
-	requestAnimationFrame(update);
+	this.renderer.render(stage);
 }
-update();
+
+gameInterface.init();
+
+function shapeRain() {
+	animator.timeout(()=>{
+		new Shape({ x: randomInt(0, parameters.width), y: -50, parent: moveArea });
+		shapeRain();
+	}, 1000 / parameters.speedCreate);
+};
+shapeRain();
+
+
+
+
+// addShape(64, 130);
