@@ -60,6 +60,11 @@ class Shape {
 		this.figure.x = param.x || 0;
 		this.figure.y = param.y || 0;
 
+		this.figure.interactive = true;
+		this.figure.on('pointerdown', function() {
+			this.clear();
+		});
+
 		if (param.stage) param.stage.addChild(this.figure);
 	}
 }
