@@ -1,0 +1,35 @@
+* {
+	padding : 0;
+	margin : 0;
+}
+
+#work-area {
+	position: absolute;
+	width: 800px;
+	height: 600px;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%,-50%,0);
+}
+
+.top-block {
+	position: absolute;
+	bottom: 101%;
+}
+.top-block div {
+	float: left;
+	margin-right: 50px;
+}
+
+.bottom-block {
+	position: absolute;
+	top: 101%;
+}
+.bottom-block div {
+	float: left;
+	margin-right: 50px;
+}
+button {
+	width: 50px;
+	height: 30px;
+}
