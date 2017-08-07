@@ -11,7 +11,7 @@ export class UserInterface {
 			speedCreate: document.querySelector('#speedCreate span'),
 		};
 
-		this.addEvent();
+		this._addEvent();
 
 		this.setShapesCoun = this.model.shapesCount;
 		this.shapesArea = this.model.shapesArea;
@@ -19,7 +19,7 @@ export class UserInterface {
 		this.speedCreate = this.model.gravity;
 	}
 
-	addEvent() {
+	_addEvent() {
 		document.querySelector('#gravity .minus').addEventListener('click', ()=>{
 			this.gravity = (this.gravity * 10 - 2) / 10;
 		});

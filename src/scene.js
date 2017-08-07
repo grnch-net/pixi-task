@@ -17,17 +17,17 @@ export class Scene extends Application {
 		this.userInterface = new UserInterface({ model: this.model });
 		this.background = new Background({ app: this });
 
-		this.addToHTML();
-		this.createShapesContainer();
-		this.shapeRain();
-		this.checkArea();
+		this._addToHTML();
+		this._createShapesContainer();
+		this._shapeRain();
+		this._checkArea();
 	}
 
-	addToHTML() {
+	_addToHTML() {
 		document.querySelector('#work-area').appendChild(this.view);
 	}
 
-	createShapesContainer() {
+	_createShapesContainer() {
 		this.shapesContainer = new Container();
         this.stage.addChild(this.shapesContainer);
 	}
@@ -37,25 +37,25 @@ export class Scene extends Application {
 		new Shape({ app: this, x, y });
 	}
 
-	shapeRain() {
+	_shapeRain() {
 		if (this.model.speedCreate == 0) {
-			setTimeout(this.shapeRain.bind(this), 1000);
+			setTimeout(this._shapeRain.bind(this), 1000);
 			return;
 		}
 
-		var randomPosition = this.randomInt(0, this.model.width);
+		var randomPosition = this._randomInt(0, this.model.width);
 		this.addShape({ x: randomPosition, y: -100 });
 
-		setTimeout(this.shapeRain.bind(this), 1000 / this.model.speedCreate);
+		setTimeout(this._shapeRain.bind(this), 1000 / this.model.speedCreate);
 	}
 
-	randomInt(min, max) {
+	_randomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	checkArea() {
+	_checkArea() {
         this.userInterface.shapesArea = this.renderer.extract.pixels(this.shapesContainer).length;
 
-		setTimeout(this.checkArea.bind(this), 100);
+		setTimeout(this._checkArea.bind(this), 100);
     }
 }

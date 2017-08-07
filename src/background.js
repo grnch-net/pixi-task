@@ -6,18 +6,18 @@ export class Background extends Graphics {
 
 		this.app = app;
 
-		this.draw();
-		this.addTouchEvent();
+		this._draw();
+		this._addTouchEvent();
 	}
 
-	draw() {
+	_draw() {
 		this.beginFill(0x000000);
 		this.drawRect(0, 0, this.app.width, this.app.height);
 		this.endFill();
 		this.app.stage.addChild(this);
 	}
 
-	addTouchEvent() {
+	_addTouchEvent() {
 		this.interactive = true;
 		this.on('pointerdown', function(e) {
 			this.app.addShape({ x: e.data.global.x, y: e.data.global.y });

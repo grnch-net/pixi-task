@@ -5,10 +5,14 @@ const fuse = FuseBox.init({
   output: "dist/$name.js",
   plugins: [
     CSSPlugin(),
-		BabelPlugin({
-		    presets: ["es2015"]
-		}),
-    WebIndexPlugin({path: "."})
+	BabelPlugin({
+	    presets: ["es2015"]
+	}),
+    WebIndexPlugin({
+		title: 'Pixi Task',
+		path: ".",
+		template: 'index.html'
+	})
   ]
 });
 

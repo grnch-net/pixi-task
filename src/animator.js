@@ -6,7 +6,7 @@ export class Animator {
 		this._stack = [];
 		this._lastTime = performance.now();
 
-		app.ticker.add(this.update.bind(this));
+		app.ticker.add(this._update.bind(this));
 	}
 
 	add({
@@ -55,7 +55,7 @@ export class Animator {
 		});
 	}
 
-	update(nowTime) {
+	_update(nowTime) {
 		var frameTime = nowTime * this.model.gravity;
 
 		for (let index = this._stack.length -1; index > -1; index--) {

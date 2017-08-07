@@ -71,21 +71,21 @@ var Scene = exports.Scene = function (_Application) {
 		_this.userInterface = new _userInterface.UserInterface({ model: _this.model });
 		_this.background = new _background.Background({ app: _this });
 
-		_this.addToHTML();
-		_this.createShapesContainer();
-		_this.shapeRain();
-		_this.checkArea();
+		_this._addToHTML();
+		_this._createShapesContainer();
+		_this._shapeRain();
+		_this._checkArea();
 		return _this;
 	}
 
 	_createClass(Scene, [{
-		key: 'addToHTML',
-		value: function addToHTML() {
+		key: '_addToHTML',
+		value: function _addToHTML() {
 			document.querySelector('#work-area').appendChild(this.view);
 		}
 	}, {
-		key: 'createShapesContainer',
-		value: function createShapesContainer() {
+		key: '_createShapesContainer',
+		value: function _createShapesContainer() {
 			this.shapesContainer = new _pixi.Container();
 			this.stage.addChild(this.shapesContainer);
 		}
@@ -99,29 +99,29 @@ var Scene = exports.Scene = function (_Application) {
 			new _shape.Shape({ app: this, x: x, y: y });
 		}
 	}, {
-		key: 'shapeRain',
-		value: function shapeRain() {
+		key: '_shapeRain',
+		value: function _shapeRain() {
 			if (this.model.speedCreate == 0) {
-				setTimeout(this.shapeRain.bind(this), 1000);
+				setTimeout(this._shapeRain.bind(this), 1000);
 				return;
 			}
 
-			var randomPosition = this.randomInt(0, this.model.width);
+			var randomPosition = this._randomInt(0, this.model.width);
 			this.addShape({ x: randomPosition, y: -100 });
 
-			setTimeout(this.shapeRain.bind(this), 1000 / this.model.speedCreate);
+			setTimeout(this._shapeRain.bind(this), 1000 / this.model.speedCreate);
 		}
 	}, {
-		key: 'randomInt',
-		value: function randomInt(min, max) {
+		key: '_randomInt',
+		value: function _randomInt(min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
 	}, {
-		key: 'checkArea',
-		value: function checkArea() {
+		key: '_checkArea',
+		value: function _checkArea() {
 			this.userInterface.shapesArea = this.renderer.extract.pixels(this.shapesContainer).length;
 
-			setTimeout(this.checkArea.bind(this), 100);
+			setTimeout(this._checkArea.bind(this), 100);
 		}
 	}]);
 
@@ -150,7 +150,7 @@ var Animator = exports.Animator = function () {
 		this._stack = [];
 		this._lastTime = performance.now();
 
-		app.ticker.add(this.update.bind(this));
+		app.ticker.add(this._update.bind(this));
 	}
 
 	_createClass(Animator, [{
@@ -202,8 +202,8 @@ var Animator = exports.Animator = function () {
 			});
 		}
 	}, {
-		key: 'update',
-		value: function update(nowTime) {
+		key: '_update',
+		value: function _update(nowTime) {
 			var frameTime = nowTime * this.model.gravity;
 
 			for (var index = this._stack.length - 1; index > -1; index--) {
@@ -255,7 +255,7 @@ var UserInterface = exports.UserInterface = function () {
 			speedCreate: document.querySelector('#speedCreate span')
 		};
 
-		this.addEvent();
+		this._addEvent();
 
 		this.setShapesCoun = this.model.shapesCount;
 		this.shapesArea = this.model.shapesArea;
@@ -264,8 +264,8 @@ var UserInterface = exports.UserInterface = function () {
 	}
 
 	_createClass(UserInterface, [{
-		key: 'addEvent',
-		value: function addEvent() {
+		key: '_addEvent',
+		value: function _addEvent() {
 			var _this = this;
 
 			document.querySelector('#gravity .minus').addEventListener('click', function () {
@@ -360,22 +360,22 @@ var Background = exports.Background = function (_Graphics) {
 
 		_this.app = app;
 
-		_this.draw();
-		_this.addTouchEvent();
+		_this._draw();
+		_this._addTouchEvent();
 		return _this;
 	}
 
 	_createClass(Background, [{
-		key: 'draw',
-		value: function draw() {
+		key: '_draw',
+		value: function _draw() {
 			this.beginFill(0x000000);
 			this.drawRect(0, 0, this.app.width, this.app.height);
 			this.endFill();
 			this.app.stage.addChild(this);
 		}
 	}, {
-		key: 'addTouchEvent',
-		value: function addTouchEvent() {
+		key: '_addTouchEvent',
+		value: function _addTouchEvent() {
 			this.interactive = true;
 			this.on('pointerdown', function (e) {
 				this.app.addShape({ x: e.data.global.x, y: e.data.global.y });
@@ -413,14 +413,14 @@ var Shape = exports.Shape = function () {
 
 		this.parent = app.shapesContainer;
 
-		this.draw(x, y);
-		this.addMoveAnimate(y, app);
-		this.adddTouchEvent(app);
+		this._draw(x, y);
+		this._addMoveAnimate(y, app);
+		this._adddTouchEvent(app);
 	}
 
 	_createClass(Shape, [{
-		key: 'adddTouchEvent',
-		value: function adddTouchEvent(app) {
+		key: '_adddTouchEvent',
+		value: function _adddTouchEvent(app) {
 			var _this = this;
 
 			this.figure.interactive = true;
@@ -429,8 +429,8 @@ var Shape = exports.Shape = function () {
 			});
 		}
 	}, {
-		key: 'addMoveAnimate',
-		value: function addMoveAnimate(y, app) {
+		key: '_addMoveAnimate',
+		value: function _addMoveAnimate(y, app) {
 			var _this2 = this;
 
 			var endPosition = app.height + 100;
@@ -440,7 +440,6 @@ var Shape = exports.Shape = function () {
 			this.anim = app.animator.add({
 				time: liveTime,
 				process: function process(progress, frame) {
-					// this.figure.y += frame * app.model.moveSpeed / 100;
 					_this2.figure.y = y + progress * pathLength;
 				},
 				callback: function callback() {
@@ -450,11 +449,11 @@ var Shape = exports.Shape = function () {
 			});
 		}
 	}, {
-		key: 'draw',
-		value: function draw(x, y) {
-			var color = this.generateRandomColor();
+		key: '_draw',
+		value: function _draw(x, y) {
+			var color = this._generateRandomColor();
 
-			this.figure = this.getRandomFigure(color);
+			this.figure = this._getRandomFigure(color);
 
 			this.figure.x = x || 0;
 			this.figure.y = y || 0;
@@ -462,114 +461,114 @@ var Shape = exports.Shape = function () {
 			this.parent.addChild(this.figure);
 		}
 	}, {
-		key: 'generateRandomColor',
-		value: function generateRandomColor() {
+		key: '_generateRandomColor',
+		value: function _generateRandomColor() {
 			return '0x' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
 		}
 	}, {
-		key: 'getRandomFigure',
-		value: function getRandomFigure(color) {
+		key: '_getRandomFigure',
+		value: function _getRandomFigure(color) {
 			var random = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 			var types = ['circle', 'ellipse', 'polygon3', 'polygon4', 'polygon5', 'polygon6', 'random'];
 
 			var typesLength = random ? types.length - 1 : types.length - 2;
-			var figureType = types[this.randomInt(0, typesLength)];
+			var figureType = types[this._randomInt(0, typesLength)];
 			switch (figureType) {
 				case 'circle':
-					return this.drawCircle(color);
+					return this._drawCircle(color);
 				case 'ellipse':
-					return this.drawEllipse(color);
+					return this._drawEllipse(color);
 				case 'polygon3':
-					return this.drawPolygon3(color);
+					return this._drawPolygon3(color);
 				case 'polygon4':
-					return this.drawPolygon4(color);
+					return this._drawPolygon4(color);
 				case 'polygon5':
-					return this.drawPolygon5(color);
+					return this._drawPolygon5(color);
 				case 'polygon6':
-					return this.drawPolygon6(color);
+					return this._drawPolygon6(color);
 				case 'random':
-					return this.drawRandom(color);
+					return this._drawRandom(color);
 			}
 		}
 	}, {
-		key: 'drawCircle',
-		value: function drawCircle(color) {
+		key: '_drawCircle',
+		value: function _drawCircle(color) {
 			var figure = new _pixi.Graphics();
 			figure.beginFill(color);
-			figure.drawCircle(0, 0, this.randomInt(10, 50));
+			figure.drawCircle(0, 0, this._randomInt(10, 50));
 			figure.endFill();
 			return figure;
 		}
 	}, {
-		key: 'drawEllipse',
-		value: function drawEllipse(color) {
+		key: '_drawEllipse',
+		value: function _drawEllipse(color) {
 			var figure = new _pixi.Graphics();
 			figure.beginFill(color);
-			figure.drawEllipse(0, 0, this.randomInt(10, 50), this.randomInt(10, 50));
+			figure.drawEllipse(0, 0, this._randomInt(10, 50), this._randomInt(10, 50));
 			figure.endFill();
 			figure.rotation = Math.random();
 			return figure;
 		}
 	}, {
-		key: 'drawPolygon3',
-		value: function drawPolygon3(color) {
+		key: '_drawPolygon3',
+		value: function _drawPolygon3(color) {
 			var figure = new _pixi.Graphics();
 			figure.beginFill(color);
-			var sides = [this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100)];
+			var sides = [this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100)];
 			figure.drawPolygon([0, sides[0], sides[1] / 2, -sides[1] / 2, -sides[2] / 2, sides[2] / 2]);
 			figure.endFill();
 			return figure;
 		}
 	}, {
-		key: 'drawPolygon4',
-		value: function drawPolygon4(color) {
+		key: '_drawPolygon4',
+		value: function _drawPolygon4(color) {
 			var figure = new _pixi.Graphics();
 			figure.beginFill(color);
-			var sides = [this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100)];
+			var sides = [this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100)];
 			figure.drawPolygon([-sides[0] / 2, -sides[0] / 2, -sides[1] / 2, sides[1] / 2, sides[2] / 2, sides[2] / 2, sides[3] / 2, -sides[3] / 2]);
 			figure.endFill();
 			return figure;
 		}
 	}, {
-		key: 'drawPolygon5',
-		value: function drawPolygon5(color) {
+		key: '_drawPolygon5',
+		value: function _drawPolygon5(color) {
 			var figure = new _pixi.Graphics();
 			figure.beginFill(color);
-			var sides = [this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100)];
+			var sides = [this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100)];
 			figure.drawPolygon([-sides[0] / 2, -sides[0] / 2, -sides[1] / 2, sides[1] / 2, 0, sides[2], sides[3] / 2, sides[3] / 2, sides[4] / 2, -sides[4] / 2]);
 			figure.endFill();
 			return figure;
 		}
 	}, {
-		key: 'drawPolygon6',
-		value: function drawPolygon6(color) {
+		key: '_drawPolygon6',
+		value: function _drawPolygon6(color) {
 			var figure = new _pixi.Graphics();
 			figure.beginFill(color);
-			var sides = [this.randomInt(10, 100), this.randomInt(10, 100), this.randomInt(10, 100)];
+			var sides = [this._randomInt(10, 100), this._randomInt(10, 100), this._randomInt(10, 100)];
 			figure.drawPolygon([-sides[0] / 2, -sides[0] / 2, -sides[0] / 2, sides[0] / 2, 0, sides[1], sides[2] / 2, sides[2] / 2, sides[2] / 2, -sides[2] / 2, 0, -sides[1]]);
 			figure.endFill();
 			return figure;
 		}
 	}, {
-		key: 'drawRandom',
-		value: function drawRandom(color) {
+		key: '_drawRandom',
+		value: function _drawRandom(color) {
 			var container = new _pixi.Container();
 
-			var figure1 = this.getRandomFigure(color, false);
+			var figure1 = this._getRandomFigure(color, false);
 			container.addChild(figure1);
 
-			var figure2 = this.getRandomFigure(color, false);
+			var figure2 = this._getRandomFigure(color, false);
 			container.addChild(figure2);
 
-			var figure3 = this.getRandomFigure(color, false);
+			var figure3 = this._getRandomFigure(color, false);
 			container.addChild(figure3);
 
 			return container;
 		}
 	}, {
-		key: 'randomInt',
-		value: function randomInt(min, max) {
+		key: '_randomInt',
+		value: function _randomInt(min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
 	}]);
